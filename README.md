@@ -138,11 +138,13 @@ KASLR 是 Kernel Address Space Layout Randomization 的缩写，即内核地址�
 
 即原论文引用 [17] 提出的一种侧信道攻击方案，可以以小于一秒的时间，准确率 99%-100%，在主流操作系统上实现去掉 KASLR 的随机化保护。
 
-###### Meltdown 
+###### Meltdown
 
 Meltdown 本身也可以泄漏 KASLR 的随机偏移量。这里先假设我们有了一个 Meltdown 的利用模型（实际上还没有），提供以下接口：
-- `int mread(size_t addr) ` ，其作用是读取 `addr` 这个地址的内容（即使是无权读取的）；
-- `size_t v2p(sizr_t vaddr)`，通过 `/proc` 下的信息，返回 `vaddr` 这个虚拟地址对应的物理地址。由于需要读取 ``/proc` 下的信息，所以需要给 root 权限。 
+
+- `int mread(size_t addr)` ，其作用是读取 `addr` 这个地址的内容（即使是无权读取的）；
+
+- `size_t v2p(sizr_t vaddr)`，通过 `/proc` 下的信息，返回 `vaddr` 这个虚拟地址对应的物理地址。由于需要读取 `/proc` 下的信息，所以需要给 root 权限。 
 
 那么以下伪代码表示的流程便可以“试”出这个随机偏移量（记为 `k_offset` )。
 
